@@ -1,0 +1,120 @@
+@property --percentage {
+    syntax: "<integer>";
+    initial-value: 0;
+    inherits: false;
+}
+
+.counter {
+    animation: counter 5s ease-out;
+    animation-fill-mode: forwards;
+    counter-reset: num var(--percentage);
+}
+
+.counter::after {
+    content: counter(num) "%";
+}
+
+@keyframes counter {
+    from {
+        --percentage: 0;
+    }
+    to {
+        --percentage: var(--counter-end);
+    }
+}
+
+.percentage-chart {
+    width: 130px;
+    height: 130px;
+    position: relative;
+}
+
+.percentage-chart-bg {
+    fill: none;
+    stroke-width: 3;
+}
+
+.percentage-chart-stroke {
+    fill: none;
+    stroke-width: 3;
+    stroke: #3c9ee5;
+    stroke-linecap: round;
+    animation: progress 5s ease-out forwards;
+}
+
+.counter {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    font-size: 24px;
+    color: #3c9ee5;
+    transform: translate3d(-50%, -50%, 0);
+}
+
+@keyframes progress {
+    0% {
+        stroke-dasharray: 0 100;
+    }
+}
+
+
+/** Optional styling **/
+
+
+/* :root {
+    color-scheme: dark;
+} */
+
+body {
+    background-color: #1c1c1c;
+}
+
+.time-breakdown {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.time-breakdown-chart {
+    display: flex;
+}
+
+.time-breakdown-chart p {
+    margin: 6px 0 0 0;
+    color: #909090;
+    font-size: 14px;
+}
+
+.time-breakdown-chart h4 {
+    margin: 0;
+    color: #e8e8e8;
+    font-size: 18px;
+    font-weight: normal;
+}
+
+.percentage-chart-meeting .percentage-chart-stroke {
+    stroke: #ff9e00;
+}
+
+.percentage-chart-distraction .percentage-chart-stroke {
+    stroke: #f74141;
+}
+
+.percentage-chart-meeting .counter {
+    color: #ff9e00;
+}
+
+.percentage-chart-distraction .counter {
+    color: #f74141;
+}
+
+.chart-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 16px;
+}
+
+.dark .time-breakdown-chart {
+    background-color: #18181b !important;
+}
