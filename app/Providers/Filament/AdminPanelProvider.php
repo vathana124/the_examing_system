@@ -30,7 +30,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->brandName('TOEFL Examination')
             ->login()
-            ->registration(CustomRegister::class)
+            // ->registration(CustomRegister::class)
             ->colors([
                 'primary' => Color::Amber,
             ])

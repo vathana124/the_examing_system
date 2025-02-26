@@ -20,6 +20,11 @@ class User extends Authenticatable implements FilamentUser
         'name',
         'email',
         'password',
+        'full_name',
+        'birth',
+        'class',
+        'year',
+        'phone_number'
     ];
 
     protected $hidden = [
@@ -40,6 +45,14 @@ class User extends Authenticatable implements FilamentUser
     public function isSuperAdmin(): bool
     {
         if($this->hasRole(config('access.role.admin'))){
+            return true;
+        }
+        return false;
+    }
+
+    public function isTeacher(): bool
+    {
+        if($this->hasRole(config('access.role.teacher'))){
             return true;
         }
         return false;

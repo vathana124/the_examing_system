@@ -16,7 +16,7 @@ class AdminUserSeeder extends Seeder
     public function run(): void
     {
         $user = User::firstOrNew(['email' => 'admin@admin.com']);
-        $user->forceFill(['password' => bcrypt('6buzPH2A6XJUTHvOX6xzQr'), 'name' => 'admin'])->save();
+        $user->forceFill(['password' => bcrypt('123'), 'name' => 'admin'])->save();
 
         // Assign admin role to the user
         $role = Role::firstOrNew(['name' => config('access.role.admin')]);

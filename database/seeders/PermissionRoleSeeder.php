@@ -31,9 +31,15 @@ class PermissionRoleSeeder extends Seeder
             'name'  => config('access.role.admin'),
         ]);
 
-        // Add role user
+        // Add role Teacher
         Role::create([
             'id'    => 2,
+            'name'  => config('access.role.teacher'),
+        ]);
+
+        // Add role user
+        Role::create([
+            'id'    => 3,
             'name'  => config('access.role.student'),
         ]);
 
@@ -49,7 +55,7 @@ class PermissionRoleSeeder extends Seeder
         ];
 
         $resource = [
-            'student_registrations' => 'Student Registrations',
+            'student_registration' => 'Student Registration',
             'candidate_lists' => 'Candidate Lists',
             'candidate_result_lists' => 'Candidate Result Lists',
         ];
