@@ -55,9 +55,8 @@ class PermissionRoleSeeder extends Seeder
         ];
 
         $resource = [
-            'student_registration' => 'Student Registration',
-            'candidate_lists' => 'Candidate Lists',
-            'candidate_result_lists' => 'Candidate Result Lists',
+            'users' => 'User Registration',
+            'exams' => 'Exam',
         ];
 
         foreach ($resource as $key => $value){
