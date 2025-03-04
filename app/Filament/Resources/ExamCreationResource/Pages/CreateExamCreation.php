@@ -113,7 +113,7 @@ class CreateExamCreation extends CreateRecord
         $exam = $this->getRecord();
 
         if(!empty($this->questions)){
-            $result = Exam::handleCreateQuestions($this->questions, $exam);
+            $result = Exam::handleCreateUpdateQuestions($this->questions, $exam);
             if(!$result){
                 Notification::make()
                     ->danger()

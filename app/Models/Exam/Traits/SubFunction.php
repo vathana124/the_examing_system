@@ -15,13 +15,26 @@ trait SubFunction {
      * @param mixed $exam
      * @return bool
      */
-    public static function handleCreateQuestions(array $questions, $exam): bool
+    public static function handleCreateUpdateQuestions(array $questions, $exam): bool
     {
         if (empty($questions) || !$exam) {
             return false; // No questions or exam provided
         }
 
         DB::beginTransaction(); // Start a database transaction
+
+        $questions_of_exam = $exam->questions ?? null;
+        if($questions_of_exam){
+          foreach($questions_of_exam as $question){
+            $options_of_question = $question->options ?? null;
+            if($options_of_question){
+              foreach($options_of_question as $option){
+                $option->delete();
+              }
+            }
+            $question->delete();
+          }
+        }
 
         try {
             // Prepare questions for bulk insertion
@@ -60,7 +73,6 @@ trait SubFunction {
                     }
                 }
             }
-
             // Insert options in bulk
             if (!empty($optionsData)) {
               DB::table('question_options')->insert($optionsData);
