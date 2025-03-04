@@ -43,11 +43,13 @@ class CreateUserRegistration extends CreateRecord
                                             TextInput::make('full_name')
                                                 ->label('Full Name')
                                                 ->required()
+                                                ->placeholder('Ex. Pheng Vathana')
                                                 ->maxLength(55),
                                             TextInput::make('email')
                                                 ->label('Email')
                                                 ->email()
                                                 ->required()
+                                                ->placeholder('Ex. VathanaPheng@gmail.com')
                                                 ->unique(ignoreRecord: true)
                                                 ->maxLength(55),
                                             TextInput::make('password')
@@ -59,6 +61,7 @@ class CreateUserRegistration extends CreateRecord
                                                 ->nullable(),
                                             TextInput::make('phone_number')
                                                 ->label('Phone Number')
+                                                ->placeholder('Ex. 012344455555')
                                                 ->rule(['regex:/^\+?[0-9]*$/'])
                                                 ->required()
                                                 ->maxLength(55),
@@ -99,6 +102,7 @@ class CreateUserRegistration extends CreateRecord
                                                 }),
                                             TextInput::make('year')
                                                 ->live(debounce:500)
+                                                ->placeholder('Ex. 1')
                                                 ->label('Year')
                                                 ->required(function($get){
                                                     $role_id = (int) $get('role_id');
@@ -133,6 +137,7 @@ class CreateUserRegistration extends CreateRecord
                                             TextInput::make('class')
                                                 ->live(debounce:500)
                                                 ->label('Class')
+                                                ->placeholder('Ex. E4')
                                                 ->required(function($get){
                                                     $role_id = (int) $get('role_id');
                                                     if($role_id){

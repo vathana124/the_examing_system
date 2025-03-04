@@ -15,11 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('exam_id')->constrained()->onDelete('cascade'); // Foreign key to exams table
             $table->text('question_text')->nullable(); // The question text
-            $table->string('option_a')->nullable(); // Option A
-            $table->string('option_b')->nullable(); // Option B
-            $table->string('option_c')->nullable(); // Option C
-            $table->string('option_d')->nullable(); // Option D
-            $table->string('correct_option')->nullable(); // Correct option (e.g., 'a', 'b', 'c', 'd')
             $table->string('score')->nullable();
             $table->timestamps();
         });
