@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\ExamCreationResource\Pages;
 
 use App\Filament\Resources\ExamCreationResource;
+use App\Models\Exam;
 use Filament\Actions;
 use Filament\Forms\Components\Checkbox;
 use Filament\Resources\Pages\CreateRecord;
@@ -16,10 +17,13 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 
 class CreateExamCreation extends CreateRecord
 {
     protected static string $resource = ExamCreationResource::class;
+
+    public $questions;
 
     public function form(Form $form): Form
     {
@@ -101,7 +105,21 @@ class CreateExamCreation extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        dd($data);
+        $this->questions = $data['questions'] ?? [];
         return $data;
+    }
+
+    protected function afterCreate() {
+        $exam = $this->getRecord();
+
+        if(!empty($this->questions)){
+            $result = Exam::handleCreateQuestions($this->questions, $exam);
+            if(!$result){
+                Notification::make()
+                    ->danger()
+                    ->title('Unsuccessfully !');
+               return redirect()->route('filament.admin.resources.exam-creations.index');
+            }
+        }
     }
 }
