@@ -197,9 +197,13 @@ class EditUserRegistration extends EditRecord
     {
         $this->role_id = (int) $data['role_id'];
 
+        $user = auth()->user();
+
         unset($data['role_id']);
 
         $data['name'] = $data['full_name'];
+        $data['created_by'] = $user?->id;
+        $data['updated_by'] = $user?->id;
 
         return $data;
     }
@@ -211,5 +215,10 @@ class EditUserRegistration extends EditRecord
         // assign role to user
         $user->roles()->sync($role_id);
         $user->save();
+    }
+
+    protected function getRedirectUrl(): string
+    {
+        return route('filament.admin.resources.user-registrations.index');
     }
 }

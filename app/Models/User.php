@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\User\Traits\Scope;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -11,7 +12,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements FilamentUser
 {
-    use HasFactory, Notifiable, HasRoles;
+    use HasFactory, Notifiable, HasRoles, Scope;
 
     public const TYPE_ADMIN = 'admin';
     public const TYPE_STUDENT = 'student';
@@ -24,7 +25,9 @@ class User extends Authenticatable implements FilamentUser
         'birth',
         'class',
         'year',
-        'phone_number'
+        'phone_number',
+        'created_by',
+        'updated_by'
     ];
 
     protected $hidden = [
