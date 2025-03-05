@@ -143,4 +143,9 @@ class EditExamCreation extends EditRecord
             }
         }
     }
+
+    protected function getRedirectUrl(): string
+    {
+        return route('filament.admin.resources.exam-creations.index');
+    }
 }

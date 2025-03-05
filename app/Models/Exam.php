@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use App\Models\Exam\Traits\Relationship;
+use App\Models\Exam\Traits\Scope;
 use App\Models\Exam\Traits\SubFunction;
 use Illuminate\Database\Eloquent\Model;
 
 class Exam extends Model
 {
-    use SubFunction, Relationship;
+    use SubFunction, Relationship, Scope;
     protected $table = 'exams';
     protected $fillable = [
         'name',
