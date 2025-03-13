@@ -19,5 +19,11 @@ class RunPermissionsToRoles extends Seeder
             $permissions = Permission::whereNotNull('parent_id')->get();
             $role->givePermissionTo($permissions);
         }
+
+        $role = Role::where('name', config('access.role.student'))->first();
+        if($role){
+            $permissions = Permission::whereNotNull('parent_id')->get();
+            $role->givePermissionTo($permissions);
+        }
     }
 }
