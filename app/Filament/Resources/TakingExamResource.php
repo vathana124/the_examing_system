@@ -6,6 +6,7 @@ use App\Filament\Resources\TakingExamResource\Pages;
 use App\Filament\Resources\TakingExamResource\RelationManagers;
 use App\Models\Exam;
 use App\Models\TakingExam;
+use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,6 +14,7 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\DB;
 
@@ -36,14 +38,19 @@ class TakingExamResource extends Resource
             ]);
     }
 
-    public static function table(Table $table): Table
-    {
+    public static function getCustomQuery(){
         //custom query
         $user = auth()->user();
-        $query = Exam::where('created_by', $user?->created_by);
+        $query = Exam::where('created_by', $user?->created_by)->where('is_prepare_exam', true);
+
+        return $query;
+    }
+
+    public static function table(Table $table): Table
+    {
 
         return $table
-            ->query($query)
+            ->query(self::getCustomQuery())
             ->columns([
                 TextColumn::make('name')
                     ->label('Exam Name'),
@@ -61,13 +68,21 @@ class TakingExamResource extends Resource
                     })
                     ->label('Questions Count'),
                 TextColumn::make('is_prepare_exam')
-                    ->label('Can Exam')
-                    ->formatStateUsing(function($state){
-                        return $state ? 'true' : 'false';
+                    ->label('Status')
+                    ->formatStateUsing(function($state, $record){
+                        $date = $record?->date;
+                        if($date == Carbon::now()->format('Y-m-d')){
+                            return Exam::STATUS[true];
+                        }
+                        return Exam::STATUS[false];
                     })
                     ->badge()
-                    ->color(function($state){
-                        return $state ? 'info' : 'danger';
+                    ->color(function($state, $record){
+                        $date = $record?->date;
+                        if($date == Carbon::now()->format('Y-m-d')){
+                            return Exam::STATUS_COLOR[true];
+                        }
+                        return Exam::STATUS_COLOR[false];
                     }),
                 TextColumn::make('date')
                     ->label('Exam Date')
@@ -77,13 +92,32 @@ class TakingExamResource extends Resource
                 //
             ])
             ->actions([
-                // Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->label('Take Exam')
+                    ->hidden(function($record){
+                        $date = $record?->date;
+                        if($date == Carbon::now()->format('Y-m-d')){
+                            return false;
+                        }
+                        return true;
+                    })
+                    ->disabled(function($record){
+                        $date = $record?->date;
+                        if($date == Carbon::now()->format('Y-m-d')){
+                            return false;
+                        }
+                        return true;
+                    }),
             ])
-            ->bulkActions([
-                // Tables\Actions\BulkActionGroup::make([
-                //     Tables\Actions\DeleteBulkAction::make(),
-                // ]),
-            ]);
+            ->recordUrl(function($record){
+                $date = $record?->date;
+                if($date == Carbon::now()->format('Y-m-d')){
+                    return route('filament.admin.resources.taking-exams.edit', [
+                            'record' => $record?->id, // Use the record's ID or unique identifier
+                    ]);
+                }
+                return null;
+            });
     }
 
     public static function getRelations(): array
@@ -97,8 +131,48 @@ class TakingExamResource extends Resource
     {
         return [
             'index' => Pages\ListTakingExams::route('/'),
-            'create' => Pages\CreateTakingExam::route('/create'),
-            'edit' => Pages\EditTakingExam::route('/{record}/edit'),
+            // 'create' => Pages\CreateTakingExam::route('/create'),
+            'edit' => Pages\EditTakingExam::route('/{record}/exam'),
         ];
+    }
+
+    // acess set up
+
+    public static function canViewAny(): bool
+    {
+        $user = auth()->user();
+        if($user->isStudent()){
+            return true;
+        }
+        return false;
+    }
+
+    public static function canCreate(): bool
+    {
+        return false;
+    }
+
+    public static function canEdit(Model $record): bool
+    {
+        $user = auth()->user();
+        if($user->isStudent()){
+            return true;
+        }
+        return false;
+    }
+
+    public static function canDelete(Model $record): bool
+    {
+        return false;
+    }
+
+    public static function canDeleteAny(): bool
+    {
+        return false;
+    }
+
+    public static function canForceDelete(Model $record): bool
+    {
+        return false;
     }
 }

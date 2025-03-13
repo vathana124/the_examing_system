@@ -43,6 +43,7 @@ trait SubFunction {
                 $questionsData[] = [
                     'exam_id' => $exam->id,
                     'question_text' => $question['question_text'],
+                    'score' => $question['score'],
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now(),
                 ];

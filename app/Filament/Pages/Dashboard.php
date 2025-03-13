@@ -18,4 +18,15 @@ class Dashboard extends BaseDashboard
         ];
     }
 
+
+    public static function canAccess(): bool
+    {
+        $user = auth()->user();
+
+        if($user->isStudent()){
+            return false;
+        }
+        return true;
+    }
+
 }

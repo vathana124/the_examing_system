@@ -20,4 +20,17 @@ class Exam extends Model
         'created_at',
         'updated_at',
     ];
+
+    const IS_PENDING = 'pending';
+    const IS_EXAMING = 'examing';
+
+    const STATUS = [
+        false => self::IS_PENDING,
+        true => self::IS_EXAMING,
+    ];
+
+    const STATUS_COLOR= [
+        false => 'warning',
+        true => 'info',
+    ];
 }

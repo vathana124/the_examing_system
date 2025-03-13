@@ -77,7 +77,19 @@ class EditExamCreation extends EditRecord
                                     ->label('Question Text')
                                     ->placeholder('Enter the question text')
                                     ->required(),
-    
+                                Grid::make(4)
+                                    ->schema([
+                                        TextInput::make('score')
+                                            ->label('Score')
+                                            ->placeholder('Ex. 1')
+                                            ->numeric() // Ensures the input is a number (integer or float)
+                                            ->required()
+                                            ->rules([
+                                                'numeric', // Ensures the value is a number
+                                                'min:0',   // Optional: Set a minimum value (e.g., 0)
+                                                'max:100', // Optional: Set a maximum value (e.g., 100)
+                                            ]),
+                                    ]),
                                 // Options Repeater
                                 Repeater::make('options')
                                     ->label('Options')
@@ -112,6 +124,7 @@ class EditExamCreation extends EditRecord
             foreach($questions as $index => $question){
                 $options = $question->options ?? null;
                 $data['questions'][$index]['question_text'] = $question?->question_text;
+                $data['questions'][$index]['score'] = $question?->score;
                 if($options){
                     foreach($options as $ind => $option){
                         $data['questions'][$index]['options'][$ind] = [
@@ -127,7 +140,9 @@ class EditExamCreation extends EditRecord
 
     protected function mutateFormDataBeforeSave(array $data): array
     {
+        $user = auth()->user();
         $this->questions = $data['questions'] ?? [];
+        $data['updated_by'] = $user?->id;
         return $data;
     }
     protected function afterSave() {

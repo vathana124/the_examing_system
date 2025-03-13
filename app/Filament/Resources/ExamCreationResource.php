@@ -12,6 +12,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ExamCreationResource extends Resource
@@ -64,4 +65,52 @@ class ExamCreationResource extends Resource
             'edit' => Pages\EditExamCreation::route('/{record}/edit'),
         ];
     }
+
+        // acess set up
+
+        public static function canViewAny(): bool
+        {
+            $user = auth()->user();
+            if($user->isTeacher()){
+                return true;
+            }
+            return false;
+        }
+    
+        public static function canCreate(): bool
+        {
+            $user = auth()->user();
+            if($user->isTeacher()){
+                return true;
+            }
+            return false;
+        }
+    
+        public static function canEdit(Model $record): bool
+        {
+            $user = auth()->user();
+            if($user->isTeacher()){
+                return true;
+            }
+            return false;
+        }
+    
+        public static function canDelete(Model $record): bool
+        {
+            $user = auth()->user();
+            if($user->isTeacher()){
+                return true;
+            }
+            return false;
+        }
+    
+        public static function canDeleteAny(): bool
+        {
+            return false;
+        }
+    
+        public static function canForceDelete(Model $record): bool
+        {
+            return false;
+        }
 }
