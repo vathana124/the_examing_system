@@ -324,6 +324,11 @@ class EditTakingExam extends EditRecord
                     'score' => $full_score_of_exam
                 ]);
 
+            $exam_ids = json_decode($this->user?->exam_ids);
+            $exam_ids[] = $exam?->id;
+            $this->user->exam_ids = json_encode($exam_ids);
+            $this->user->save();
+
             DB::commit();
 
             Notification::make()

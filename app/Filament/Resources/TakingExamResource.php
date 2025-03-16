@@ -41,7 +41,7 @@ class TakingExamResource extends Resource
     public static function getCustomQuery(){
         //custom query
         $user = auth()->user();
-        $query = Exam::whereIn('created_by', [$user?->created_by, $user?->id])->where('is_prepare_exam', true);
+        $query = Exam::whereIn('created_by', [$user?->created_by, $user?->id])->where('is_prepare_exam', true)->whereNotIn('id', json_decode($user?->exam_ids));
 
         return $query;
     }
@@ -156,7 +156,7 @@ class TakingExamResource extends Resource
     {
         $user = auth()->user();
         if($user->isStudent()){
-        return true;
+            return true;
         }
         return false;
     }
