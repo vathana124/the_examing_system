@@ -14,7 +14,7 @@ class Dashboard extends BaseDashboard
     {
         return [
             StatsOverview::class,
-            PieChart::class
+            // PieChart::class
         ];
     }
 
@@ -23,7 +23,7 @@ class Dashboard extends BaseDashboard
     {
         $user = auth()->user();
 
-        if($user->isStudent() || $user->isSuperAdmin()){
+        if($user->isSuperAdmin()){
             return false;
         }
         return true;
