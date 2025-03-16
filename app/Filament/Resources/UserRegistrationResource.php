@@ -6,6 +6,7 @@ use App\Filament\Resources\UserRegistrationResource\Pages;
 use App\Filament\Resources\UserRegistrationResource\RelationManagers;
 use App\Models\User;
 use App\Models\UserRegistration;
+use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -67,5 +68,19 @@ class UserRegistrationResource extends Resource
             'create' => Pages\CreateUserRegistration::route('/create'),
             'edit' => Pages\EditUserRegistration::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = static::getModel()::query();
+
+        if (
+            static::isScopedToTenant() &&
+            ($tenant = Filament::getTenant())
+        ) {
+            static::scopeEloquentQueryToTenant($query, $tenant);
+        }
+
+        return $query->where('created_by', auth()->user()?->id);
     }
 }
