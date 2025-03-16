@@ -51,6 +51,11 @@ trait SubFunction {
 
             // Insert questions in bulk
             DB::table('questions')->insert($questionsData);
+            
+            $exam_score = DB::table('questions')->where('exam_id', $exam?->id)->sum('score');
+
+            $exam->score = $exam_score;
+            $exam->save();
 
             // Retrieve the IDs of the inserted questions
             $insertedQuestions = DB::table('questions')

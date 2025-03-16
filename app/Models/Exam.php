@@ -21,6 +21,7 @@ class Exam extends Model
         'updated_at',
         'created_by',
         'updated_by',
+        'score',
     ];
 
     const IS_PENDING = 'pending';
