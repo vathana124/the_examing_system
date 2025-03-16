@@ -7,5 +7,4 @@ how to install the project
 - npm run build or npm run dev
 - php artisan key:generate
 - php artisan migrate
-- php artisan make:filament-user
 - php artisan serve
