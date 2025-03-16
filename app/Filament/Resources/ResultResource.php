@@ -9,6 +9,8 @@ use App\Models\Result;
 use App\Models\StudentExam;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\Fieldset;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
@@ -16,6 +18,8 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\HtmlString;
+use Filament\Tables\Actions\Action;
 
 class ResultResource extends Resource
 {
@@ -51,14 +55,24 @@ class ResultResource extends Resource
                 TextColumn::make('exam.name')
                     ->label('Exam'),
                 TextColumn::make('exam.score')
-                    ->label('Exam Score'),
+                    ->label('Exam Score')
+                    ->formatStateUsing(function($record, $state){
+                        return new HtmlString(
+                            "<span class='text-blue-600 font-bold'>$state</span>"
+                        );
+                    }),
                 TextColumn::make('exam.teacher.name')
                     ->label('Teacher'),
                 TextColumn::make('score')
                     ->label('Your Score')
                     ->formatStateUsing(function($record, $state){
                         $exam = $record->exam;
-                        return $state. ' of ' .$exam?->score;
+                        $exam_score = $exam?->score;
+                        return new HtmlString(
+                            "<span class='text-green500 font-bold'>$state</span>" .
+                            "<span class='text-gray-500'> / </span>" .
+                            "<span class='text-blue-600 font-bold'>$exam_score</span>"
+                        );
                     }),
                 TextColumn::make('exam_id')
                     ->label('Status')
@@ -73,11 +87,19 @@ class ResultResource extends Resource
                         }
                     })
                     ->badge()
+                    ->icon(function ($record) {
+                        $exam = $record->exam;
+                        if ($record?->score >= ($exam?->score) / 2) {
+                            return 'heroicon-o-check-circle'; // Icon for passed status
+                        } else {
+                            return 'heroicon-o-x-circle'; // Icon for failed status
+                        }
+                    })
                     ->color(function($record){
                         $exam = $record->exam;
 
                         if($record?->score >= ($exam?->score)/2){
-                            return 'info';
+                            return 'success';
                         }
                         else{
                             return 'danger';
@@ -90,6 +112,77 @@ class ResultResource extends Resource
             ])
             ->actions([
                 // Tables\Actions\EditAction::make(),
+                Action::make('view')
+                ->label('View')
+                ->icon('heroicon-o-eye') // Add an icon (using Heroicons)
+                ->color('primary') // Set the button color
+                ->close() // Add a close button to the modal/slide-over
+                ->infolist([
+                    Fieldset::make('Result')
+                        ->schema([
+                            TextEntry::make('exam.name')
+                                ->label('Exam Name')
+                                ->weight('bold') // Make the label bold
+                                ->color('gray-500'), // Set text color
+            
+                            TextEntry::make('exam.score')
+                                ->label('Exam Score')
+                                ->formatStateUsing(function ($record, $state) {
+                                    return new HtmlString(
+                                        "<span class='text-blue-600 font-bold text-lg'>$state</span>"
+                                    );
+                                }),
+            
+                            TextEntry::make('exam.teacher.name')
+                                ->label('Teacher')
+                                ->weight('medium') // Medium font weight
+                                ->color('gray-500'), // Set text color
+            
+                            TextEntry::make('score')
+                                ->label('Your Score')
+                                ->formatStateUsing(function ($record, $state) {
+                                    $exam = $record->exam;
+                                    $exam_score = $exam?->score;
+                                    return new HtmlString(
+                                        "<span class='text-green-500 font-bold text-lg'>$state</span>" .
+                                        "<span class='text-gray-500'> / </span>" .
+                                        "<span class='text-blue-600 font-bold text-lg'>$exam_score</span>"
+                                    );
+                                }),
+            
+                            TextEntry::make('exam_id')
+                                ->label('Status')
+                                ->formatStateUsing(function ($record) {
+                                    $exam = $record->exam;
+                                    if ($record?->score >= ($exam?->score) / 2) {
+                                        return 'Passed';
+                                    } else {
+                                        return 'Failed';
+                                    }
+                                })
+                                ->badge()
+                                ->color(function ($record) {
+                                    $exam = $record->exam;
+                                    if ($record?->score >= ($exam?->score) / 2) {
+                                        return 'success'; // Use 'success' for passed status
+                                    } else {
+                                        return 'danger'; // Use 'danger' for failed status
+                                    }
+                                })
+                                ->icon(function ($record) {
+                                    $exam = $record->exam;
+                                    if ($record?->score >= ($exam?->score) / 2) {
+                                        return 'heroicon-o-check-circle'; // Icon for passed status
+                                    } else {
+                                        return 'heroicon-o-x-circle'; // Icon for failed status
+                                    }
+                                }),
+                        ])
+                        ->columns(3)
+                        ->columnSpan('full'), // Make the fieldset span full width
+                ])
+                ->modalSubmitAction(false)
+                ->modalCancelActionLabel('Close')
             ])
             ->bulkActions([
                 // Tables\Actions\BulkActionGroup::make([
