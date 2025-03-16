@@ -36,4 +36,33 @@ class Exam extends Model
         false => 'warning',
         true => 'info',
     ];
+
+    public static function failed_students($exam)
+    {
+        $score = $exam->score / 2;
+        $students = StudentExam::where('exam_id', $exam->id)
+            ->whereRaw('CAST(score AS FLOAT) < ?', [$score]) // Cast score to FLOAT
+            ->distinct('user_id') // Ensure distinct users are counted
+            ->count('user_id'); // Count distinct user IDs
+        return $students;
+    }
+    
+    public static function passed_students($exam)
+    {
+        $score = $exam->score / 2;
+        $students = StudentExam::where('exam_id', $exam->id)
+            ->whereRaw('CAST(score AS FLOAT) >= ?', [$score]) // Cast score to FLOAT
+            ->distinct('user_id') // Ensure distinct users are counted
+            ->count('user_id'); // Count distinct user IDs
+        return $students;
+    }
+
+    public static function students($exam)
+    {
+        $score = $exam->score / 2;
+        $students = StudentExam::where('exam_id', $exam->id)
+            ->distinct('user_id') // Ensure distinct users are counted
+            ->count('user_id'); // Count distinct user IDs
+        return $students;
+    }
 }

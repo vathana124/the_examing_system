@@ -14,4 +14,9 @@ trait Relationship {
   {
       return $this->belongsTo(Exam::class, 'exam_id', 'id');
   }
+
+  public function student()
+  {
+      return $this->belongsTo(User::class, 'user_id', 'id');
+  }
 }
