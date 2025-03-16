@@ -271,18 +271,54 @@ class EditTakingExam extends EditRecord
                 'updated_at' => Carbon::now(),
             ]);
 
+            if($student_exam){
+                $student_exam = DB::table('student_exams')->where('user_id', $this->user?->id)->where('exam_id', $exam?->id)->first();
+            }
+
             $questions = $data['questions'];
 
 
             $student_answers = [];
 
-            $questions_of_exam = 
+            $questions_of_exam = $exam->questions;
+
+            // dd($questions_of_exam, $questions);
 
             if(!empty($questions)){
                 foreach($questions as $index => $question){
+                    foreach($questions_of_exam as $index => $question_of_exam){
+                        if($question_of_exam?->id == (int)$question['question_id']){
+                            $options = $question_of_exam->options;
+                            $answer = [
+                                'student_exam_id' => $student_exam?->id,
+                                'question_id' => $question_of_exam?->id,
+                                'created_at' => Carbon::now(),
+                                'updated_at' => Carbon::now(),
+                            ];
+                            foreach($options as $index => $option){
+                                if($option?->id == (int)$question['options']){
+                                    $answer['selected_option'] = $option?->id;
+                                    $answer['score'] = $question_of_exam?->score;
+                                    $answer['correct_option'] = $option?->is_correct;
 
+                                    $student_answers[] = $answer;
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                    }
                 }
             }
+
+            // create student answers
+            DB::table('student_answers')->insert($student_answers);
+
+            $full_score_of_exam = DB::table('student_answers')->where('student_exam_id', $student_exam?->id)->where('correct_option', true)->sum('score');
+
+            //update full score
+            $student_exam->score = $full_score_of_exam;
+            $student_exam->save();
 
             DB::commit();
 
