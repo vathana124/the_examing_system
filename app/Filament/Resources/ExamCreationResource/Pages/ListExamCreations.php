@@ -28,15 +28,10 @@ class ListExamCreations extends ListRecords
         return $table
                 ->columns([
                     TextColumn::make('name')
-                        ->label('Exam Name'),
+                        ->label('Exam'),
                     TextColumn::make('description')
                         ->label('Exam Description')
                         ->limit(20),
-                    TextColumn::make('duration')
-                        ->label('Exam Duration')
-                        ->formatStateUsing(function($state){
-                            return $state. '(mn)';
-                        }),
                     TextColumn::make('questions')
                         ->formatStateUsing(function($record){
                             return DB::table('questions')->where('exam_id', $record?->id)->count();
@@ -48,6 +43,9 @@ class ListExamCreations extends ListRecords
                             return $state ? 'true' : 'false';
                         })
                         ->badge()
+                        ->icon(function($state){
+                            return $state ? 'heroicon-o-check-circle' : 'heroicon-o-x-circle';
+                        })
                         ->color(function($state){
                             return $state ? 'info' : 'danger';
                         }),
