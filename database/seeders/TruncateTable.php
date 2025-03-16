@@ -16,5 +16,7 @@ class TruncateTable extends Seeder
         DB::table('question_options')->truncate();
         DB::table('questions')->truncate();
         DB::table('exams')->truncate();
+        DB::table('student_answers')->truncate();
+        DB::table('student_exams')->truncate();
     }
 }

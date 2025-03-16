@@ -317,10 +317,20 @@ class EditTakingExam extends EditRecord
             $full_score_of_exam = DB::table('student_answers')->where('student_exam_id', $student_exam?->id)->where('correct_option', true)->sum('score');
 
             //update full score
-            $student_exam->score = $full_score_of_exam;
-            $student_exam->save();
+            DB::table('student_exams')
+                ->where('user_id', $this->user?->id)
+                ->where('exam_id', $exam?->id)
+                ->update([
+                    'score' => $full_score_of_exam
+                ]);
 
             DB::commit();
+
+            Notification::make()
+                ->title('Submit Exam Success!')
+                ->success()
+                ->send();
+            return redirect()->route('filament.admin.resources.taking-exams.index');
 
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -330,5 +340,10 @@ class EditTakingExam extends EditRecord
                 ->send();
             return redirect()->route('filament.admin.resources.taking-exams.index');
         }
+    }
+
+    protected function getRedirectUrl(): ?string
+    {
+        return route('filament.admin.resources.taking-exams.index');
     }
 }
