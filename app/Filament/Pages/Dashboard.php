@@ -23,7 +23,7 @@ class Dashboard extends BaseDashboard
     {
         $user = auth()->user();
 
-        if($user->isStudent()){
+        if($user->isStudent() || $user->isSuperAdmin()){
             return false;
         }
         return true;
