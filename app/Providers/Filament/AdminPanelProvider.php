@@ -28,7 +28,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->brandName('TOEFL Examination')
+            ->brandName('The Exam System')
             ->login()
             // ->registration(CustomRegister::class)
             ->colors([
