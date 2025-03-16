@@ -53,7 +53,8 @@ class ResultResource extends Resource
             ->query(self::getCustomQuery())
             ->columns([
                 TextColumn::make('exam.name')
-                    ->label('Exam'),
+                    ->label('Exam')
+                    ->searchable(),
                 TextColumn::make('exam.score')
                     ->label('Exam Score')
                     ->formatStateUsing(function($record, $state){

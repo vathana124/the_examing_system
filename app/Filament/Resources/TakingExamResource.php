@@ -55,7 +55,8 @@ class TakingExamResource extends Resource
             ->query(self::getCustomQuery())
             ->columns([
                 TextColumn::make('name')
-                    ->label('Exam Name'),
+                    ->label('Exam Name')
+                    ->searchable(),
                 TextColumn::make('description')
                     ->label('Exam Description')
                     ->limit(20),
