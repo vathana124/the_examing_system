@@ -19,6 +19,8 @@ class Exam extends Model
         'is_prepare_exam',
         'created_at',
         'updated_at',
+        'created_by',
+        'updated_by',
     ];
 
     const IS_PENDING = 'pending';

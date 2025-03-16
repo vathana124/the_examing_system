@@ -135,7 +135,6 @@ class EditExamCreation extends EditRecord
                 }
             }
         }
-        dd($data);
         return $data;
     }
 
