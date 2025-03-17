@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserRegistrationResource\Pages;
 use App\Filament\Resources\UserRegistrationResource\RelationManagers;
+use App\Models\Exam;
 use App\Models\User;
 use App\Models\UserRegistration;
 use Filament\Facades\Filament;
@@ -11,6 +12,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -39,7 +41,18 @@ class UserRegistrationResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('name')
+                    ->label('Name'),
+                TextColumn::make('email')
+                    ->label('Email'),
+                TextColumn::make('roles.name')
+                    ->label('Role'),
+                TextColumn::make('created_at')
+                    ->label('Created At')
+                    ->dateTime('d F Y'),
+                TextColumn::make('updated_at')
+                    ->label('Updated At')
+                    ->dateTime('d F Y'),
             ])
             ->filters([
                 //
@@ -48,9 +61,9 @@ class UserRegistrationResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                // Tables\Actions\BulkActionGroup::make([
+                //     Tables\Actions\DeleteBulkAction::make(),
+                // ]),
             ]);
     }
 
@@ -65,22 +78,14 @@ class UserRegistrationResource extends Resource
     {
         return [
             'index' => Pages\ListUserRegistrations::route('/'),
-            'create' => Pages\CreateUserRegistration::route('/create'),
+            // 'create' => Pages\CreateUserRegistration::route('/create'),
             'edit' => Pages\EditUserRegistration::route('/{record}/edit'),
         ];
     }
 
     public static function getEloquentQuery(): Builder
     {
-        $query = static::getModel()::query();
-
-        if (
-            static::isScopedToTenant() &&
-            ($tenant = Filament::getTenant())
-        ) {
-            static::scopeEloquentQueryToTenant($query, $tenant);
-        }
-
+        $query = User::whereNotNull('id');
         return $query->where('created_by', auth()->user()?->id);
     }
 }
