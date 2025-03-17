@@ -4,6 +4,7 @@ namespace App\Filament\Resources\TakingExamResource\Pages;
 
 use App\Filament\Resources\TakingExamResource;
 use App\Models\Exam;
+use App\Models\StudentExam;
 use Carbon\Carbon;
 use Filament\Actions;
 use Filament\Actions\Action;
@@ -194,6 +195,7 @@ class EditTakingExam extends EditRecord
                                                     }),
                                                 Radio::make('options')
                                                     ->label('')
+                                                    ->required()
                                                     ->options(function($state){
                                                         return $state;
                                                     }),
@@ -328,6 +330,14 @@ class EditTakingExam extends EditRecord
             $exam_ids[] = $exam?->id;
             $this->user->exam_ids = json_encode($exam_ids);
             $this->user->save();
+
+            // update grades
+            $student_exams = StudentExam::where('exam_id', $exam?->id)->orderBy('score', 'desc')->get();
+
+            foreach($student_exams as $index => $student_exam){
+                $student_exam->grade = $index + 1;
+                $student_exam->save();
+            }
 
             DB::commit();
 

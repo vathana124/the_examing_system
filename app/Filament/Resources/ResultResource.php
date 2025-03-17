@@ -105,7 +105,14 @@ class ResultResource extends Resource
                         else{
                             return 'danger';
                         }
-                    })
+                    }),
+                TextColumn::make('grade')
+                    ->label('Grade')
+                    ->formatStateUsing(function($record, $state){
+                        return new HtmlString(
+                            "<span class='text-blue-600 font-bold'>$state</span>"
+                        );
+                    }),
                 
             ])
             ->filters([

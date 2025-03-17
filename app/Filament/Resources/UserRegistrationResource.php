@@ -78,7 +78,7 @@ class UserRegistrationResource extends Resource
     {
         return [
             'index' => Pages\ListUserRegistrations::route('/'),
-            // 'create' => Pages\CreateUserRegistration::route('/create'),
+            'create' => Pages\CreateUserRegistration::route('/create'),
             'edit' => Pages\EditUserRegistration::route('/{record}/edit'),
         ];
     }

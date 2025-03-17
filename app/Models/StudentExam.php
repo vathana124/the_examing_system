@@ -10,4 +10,13 @@ class StudentExam extends Model
     use Relationship;
 
     protected $table = 'student_exams';
+
+    protected $fillable = [
+        'user_id',
+        'exam_id',
+        'score',
+        'created_at',
+        'updated_at',
+        'grade',
+    ];
 }
