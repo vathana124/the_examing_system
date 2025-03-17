@@ -44,7 +44,7 @@ class StatsOverview extends BaseWidget
                 // Check if the exam result exists and compare the score
                 if ($exam_result && $exam_result->score < $score) {
                     $failed += 1;
-                } else {
+                } elseif($exam_result && $exam_result->score >= $score) {
                     $passed += 1;
                 }
             }
