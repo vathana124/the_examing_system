@@ -70,6 +70,11 @@ class StatsOverview extends BaseWidget
 
     protected function getColumns(): int
     {
-        return 2; // You can adjust the number of columns based on your layout
+        if(auth()->user()->isTeacher()){
+            return 2;
+        }
+        else{
+            return 3;
+        }
     }
 }
