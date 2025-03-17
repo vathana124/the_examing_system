@@ -195,10 +195,10 @@ class EditTakingExam extends EditRecord
                                                     }),
                                                 Radio::make('options')
                                                     ->label('')
-                                                    ->required()
                                                     ->options(function($state){
                                                         return $state;
-                                                    }),
+                                                    })
+                                                    ->required(),
                                                 Hidden::make('question_id'),
                                             ])
                                             ->addable(false) // Hide the "Add" button
