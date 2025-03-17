@@ -112,7 +112,8 @@ class ResultResource extends Resource
                 //
             ])
             ->actions([
-                // Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make()
+                    ->label('Your Answers'),
                 Action::make('view')
                 ->label('View')
                 ->icon('heroicon-o-eye') // Add an icon (using Heroicons)
@@ -203,6 +204,7 @@ class ResultResource extends Resource
     {
         return [
             'index' => Pages\ListResults::route('/'),
+            'view' => Pages\ViewResult::route('/{record}'),
             // 'create' => Pages\CreateResult::route('/create'),
             // 'edit' => Pages\EditResult::route('/{record}/edit'),
         ];
