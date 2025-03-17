@@ -44,6 +44,7 @@ class CreateUserRegistration extends CreateRecord
                                                 ->label('Full Name')
                                                 ->required()
                                                 ->placeholder('Ex. Pheng Vathana')
+                                                ->unique(ignoreRecord: true)
                                                 ->maxLength(55),
                                             TextInput::make('email')
                                                 ->label('Email')
@@ -63,6 +64,7 @@ class CreateUserRegistration extends CreateRecord
                                                 ->label('Phone Number')
                                                 ->placeholder('Ex. 012344455555')
                                                 ->rule(['regex:/^\+?[0-9]*$/'])
+                                                ->unique(ignoreRecord: true)
                                                 ->required()
                                                 ->maxLength(55),
                                             DatePicker::make('birth')
