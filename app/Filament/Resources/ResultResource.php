@@ -186,6 +186,13 @@ class ResultResource extends Resource
                                         return 'heroicon-o-x-circle'; // Icon for failed status
                                     }
                                 }),
+                                TextEntry::make('grade')
+                                    ->label('Grade')
+                                    ->formatStateUsing(function ($record, $state) {
+                                        return new HtmlString(
+                                            "<span class='text-blue-600 font-bold text-lg'>$state</span>"
+                                        );
+                                    }),
                         ])
                         ->columns(3)
                         ->columnSpan('full'), // Make the fieldset span full width

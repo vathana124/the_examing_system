@@ -32,7 +32,7 @@ class StudentsExamRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('title')
+            ->recordTitleAttribute('id')
             ->columns([
                 TextColumn::make('exam.name')
                     ->label('Exam')
@@ -87,7 +87,14 @@ class StudentsExamRelationManager extends RelationManager
                         else{
                             return 'danger';
                         }
-                    })
+                    }),
+                TextColumn::make('grade')
+                    ->label('Grade')
+                    ->formatStateUsing(function($record, $state){
+                        return new HtmlString(
+                            "<span class='text-blue-600 font-bold'>$state</span>"
+                        );
+                    }),
                 
             ])
             ->filters([
@@ -99,7 +106,6 @@ class StudentsExamRelationManager extends RelationManager
             ->actions([
                 // Tables\Actions\EditAction::make(),
                 // Tables\Actions\DeleteAction::make(),
-
                 Action::make('view')
                 ->label('View')
                 ->icon('heroicon-o-eye') // Add an icon (using Heroicons)
@@ -165,17 +171,25 @@ class StudentsExamRelationManager extends RelationManager
                                         return 'heroicon-o-x-circle'; // Icon for failed status
                                     }
                                 }),
+                                TextEntry::make('grade')
+                                    ->label('Grade')
+                                    ->formatStateUsing(function ($record, $state) {
+                                        return new HtmlString(
+                                            "<span class='text-blue-600 font-bold text-lg'>$state</span>"
+                                        );
+                                    }),
                         ])
                         ->columns(3)
                         ->columnSpan('full'), // Make the fieldset span full width
                 ])
                 ->modalSubmitAction(false)
-                ->modalCancelActionLabel('Close')
+                ->modalCancelActionLabel('Close'),
             ])
             ->bulkActions([
                 // Tables\Actions\BulkActionGroup::make([
                 //     Tables\Actions\DeleteBulkAction::make(),
                 // ]),
-            ]);
+            ])
+            ->defaultSort('grade');
     }
 }

@@ -134,8 +134,16 @@ class ViewResult extends ViewRecord
                                             }
                                         })
                                         ->dehydrated(true),
+                                        Placeholder::make('grade')
+                                            ->label('Grade')
+                                            ->content(function($record){
+                                                $state = $record?->grade;
+                                                return new HtmlString(
+                                                    "<span class='text-blue-600 font-bold text-sm'>$state</span>"
+                                                );
+                                            }),
                                 ])
-                                ->columns(4),                                
+                                ->columns(3),                                
                             Fieldset::make('Question')
                                     ->schema([
                                         Repeater::make('questions')
