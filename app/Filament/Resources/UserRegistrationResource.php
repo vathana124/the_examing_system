@@ -12,6 +12,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -42,9 +43,11 @@ class UserRegistrationResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->label('Name'),
+                    ->label('Name')
+                    ->searchable(),
                 TextColumn::make('email')
-                    ->label('Email'),
+                    ->label('Email')
+                    ->searchable(),
                 TextColumn::make('roles.name')
                     ->label('Role'),
                 TextColumn::make('created_at')
@@ -58,6 +61,19 @@ class UserRegistrationResource extends Resource
                 //
             ])
             ->actions([
+                Action::make('allow_to_exam')
+                        ->label('Allow To Exam')
+                        ->color('info')
+                        ->icon('heroicon-o-academic-cap')
+                        ->disabled(function($record){
+                            return $record->isStudent() ? false : true;
+                        })
+                        ->hidden(function($record){
+                            return $record->isStudent() ? false : true;
+                        })
+                        ->action(function($record){
+                            dd($record);
+                        }),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([

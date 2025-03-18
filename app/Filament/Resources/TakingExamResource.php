@@ -57,6 +57,9 @@ class TakingExamResource extends Resource
                 TextColumn::make('name')
                     ->label('Exam Name')
                     ->searchable(),
+                TextColumn::make('teacher.name')
+                    ->label('Teacher')
+                    ->searchable(),
                 TextColumn::make('description')
                     ->label('Exam Description')
                     ->limit(20),

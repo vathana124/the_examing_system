@@ -260,4 +260,21 @@ class ExamResultResource extends Resource
     {
         return false;
     }
+
+    public static function getEloquentQuery(): Builder
+    {
+        // $query = static::getModel()::query();
+
+        // if (
+        //     static::isScopedToTenant() &&
+        //     ($tenant = Filament::getTenant())
+        // ) {
+        //     static::scopeEloquentQueryToTenant($query, $tenant);
+        // }
+
+        // return $query;
+
+        $query = Exam::whereNotNull('id');
+        return $query->where('created_by', auth()->user()?->id);
+    }
 }
