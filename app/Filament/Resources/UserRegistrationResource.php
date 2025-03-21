@@ -10,6 +10,7 @@ use App\Models\UserRegistration;
 use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\Action;
@@ -17,6 +18,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\DB;
 
 class UserRegistrationResource extends Resource
 {
@@ -65,14 +67,125 @@ class UserRegistrationResource extends Resource
                         ->label('Allow To Exam')
                         ->color('info')
                         ->icon('heroicon-o-academic-cap')
+                        ->requiresConfirmation()
+                        ->modalHeading('Do you want to allow to exam ?') // Confirmation modal title
                         ->disabled(function($record){
-                            return $record->isStudent() ? false : true;
+                            $user = auth()->user();
+                            if($record->isStudent()){
+                                $teachers = json_decode($record?->teachers,true);
+                                if($teachers){
+                                    if(in_array($user?->id, $teachers)){
+                                        return true;
+                                    }
+                                    return false;
+                                }
+                                return false;
+                            }
+                            return true;
                         })
                         ->hidden(function($record){
-                            return $record->isStudent() ? false : true;
+                            $user = auth()->user();
+                            if($record->isStudent()){
+                                $teachers = json_decode($record?->teachers,true);
+                                if($teachers){
+                                    if(in_array($user?->id, $teachers)){
+                                        return true;
+                                    }
+                                    return false;
+                                }
+                                return false;
+                            }
+                            return true;
                         })
                         ->action(function($record){
-                            dd($record);
+                            if($record){
+                                try {
+                                    DB::beginTransaction(); 
+
+                                    $teachers = json_decode($record?->teachers,true) ?? [];
+                                    $user = auth()->user();
+                                    $teachers[] = $user?->id;
+                                    $record->teachers = json_encode($teachers);
+                                    $record->save();
+
+                                    DB::commit();
+
+                                    Notification::make()
+                                        ->title('Allow To Exam Success!')
+                                        ->success()
+                                        ->send();
+                                } catch (\Throwable $th) {
+                                    DB::rollBack();
+
+                                    Notification::make()
+                                        ->title('Allow To Exam Fail!')
+                                        ->danger()
+                                        ->send();
+                                }
+                            }
+                        }),
+                Action::make('not_allow_to_exam')
+                        ->label('Not Allow To Exam')
+                        ->color('danger')
+                        ->requiresConfirmation()
+                        ->modalHeading('Do you want to not allow to exam ?') // Confirmation modal title
+                        ->icon('heroicon-o-academic-cap')
+                        ->disabled(function($record){
+                            $user = auth()->user();
+                            if($record->isStudent()){
+                                $teachers = json_decode($record?->teachers,true);
+                                if($teachers){
+                                    if(in_array($user?->id, $teachers)){
+                                        return false;
+                                    }
+                                    return true;
+                                }
+                                return true;
+                            }
+                            return true;
+                        })
+                        ->hidden(function($record){
+                            $user = auth()->user();
+                            if($record->isStudent()){
+                                $teachers = json_decode($record?->teachers,true);
+                                if($teachers){
+                                    if(in_array($user?->id, $teachers)){
+                                        return false;
+                                    }
+                                    return true;
+                                }
+                                return true;
+                            }
+                            return true;
+                        })
+                        ->action(function($record){
+                            if($record){
+                                try {
+
+                                    DB::beginTransaction(); 
+
+                                    $teachers = json_decode($record?->teachers,true) ?? [];
+
+                                    $user = auth()->user();
+                                    $teachers = array_diff($teachers, [$user?->id]);
+                                    $record->teachers = json_encode($teachers);
+                                    $record->save();
+
+                                    DB::commit();
+
+                                    Notification::make()
+                                        ->title('Not Allow To Exam Success!')
+                                        ->success()
+                                        ->send();
+                                } catch (\Throwable $th) {
+                                    DB::rollBack();
+
+                                    Notification::make()
+                                        ->title('Not Allow To Exam Fail!')
+                                        ->danger()
+                                        ->send();
+                                }
+                            }
                         }),
                 Tables\Actions\EditAction::make(),
             ])

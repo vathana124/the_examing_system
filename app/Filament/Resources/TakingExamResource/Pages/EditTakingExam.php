@@ -264,6 +264,8 @@ class EditTakingExam extends EditRecord
 
     public function storeExamResult($data, $exam){
         try {
+
+            DB::beginTransaction();
             
             $student_exam = DB::table('student_exams')->insert([
                 'user_id' => $this->user?->id,

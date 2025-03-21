@@ -92,7 +92,7 @@ class CustomRegister extends Register
             ->password()
             ->revealable(filament()->arePasswordsRevealable())
             ->required()
-            ->rule(Password::default())
+            // ->rule(Password::default())
             ->dehydrateStateUsing(fn ($state) => Hash::make($state))
             ->same('passwordConfirmation')
             ->validationAttribute(__('filament-panels::pages/auth/register.form.password.validation_attribute'));
@@ -124,5 +124,11 @@ class CustomRegister extends Register
             ->link()
             ->label(__('Already Registration'))
             ->url(filament()->getLoginUrl());
+    }
+
+    protected function afterRegister(): void
+    {
+    //    $record = $this->getRecord();
+       dd($this->userModel);
     }
 }
