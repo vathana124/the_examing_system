@@ -23,6 +23,11 @@ class ExamCreationResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    public static function getNavigationIcon(): string
+    {
+        return asset('icons/flaticon/importDataByVillageCode-4.png');
+    }
+
     public static function form(Form $form): Form
     {
         return $form

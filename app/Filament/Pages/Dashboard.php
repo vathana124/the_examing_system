@@ -8,9 +8,15 @@ use App\Livewire\PieChart;
 use App\Livewire\StatsOverview;
 use Filament\Pages\Dashboard as BaseDashboard;
 use Filament\Pages\Page;
+use Illuminate\Contracts\Support\Htmlable;
 
 class Dashboard extends BaseDashboard
 {
+
+    public static function getNavigationIcon(): string | Htmlable | null
+    {
+        return asset('icons/flaticon/dashboard.png');
+    }
 
     public function getWidgets(): array
     {

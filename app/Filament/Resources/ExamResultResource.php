@@ -34,6 +34,11 @@ class ExamResultResource extends Resource
 
     protected static ?string $modelLabel = 'ExamResult';
 
+    public static function getNavigationIcon(): string
+    {
+        return asset('icons/flaticon/importDataByDistrictCode-2.png');
+    }
+
     public static function form(Form $form): Form
     {
         return $form

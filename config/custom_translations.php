@@ -13,7 +13,7 @@ return [
         'heading'  => 'The Exam System',
         'sub_heading' => 'Verify OTP',
         'copy_right' => 'ក្រសួងរៀបចំដែនដី នគរូបនីយកម្ម និងសំណង់',
-        'email_title' => 'សូមពិនិត្យអ៊ីមែលរបស់អ្នកសម្រាប់លេខកូដ OTP។',
+        'email_title' => 'Please Check Your Mail For OTP',
         'email_sub_title' => 'Email',
         'resend_title' => 'Do not get OTP ?',
         'otp_label' => 'Send OTP',

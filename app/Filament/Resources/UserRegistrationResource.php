@@ -32,6 +32,11 @@ class UserRegistrationResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
+    public static function getNavigationIcon(): string
+    {
+        return asset('icons/flaticon/user-2.png');
+    }
+
     public static function form(Form $form): Form
     {
         return $form

@@ -30,6 +30,12 @@ class TakingExamResource extends Resource
 
     protected static ?int $navigationSort = 4;
 
+    public static function getNavigationIcon(): string
+    {
+        return asset('icons/flaticon/DailyReportByDistrict-2.png');
+    }
+
+
     public static function form(Form $form): Form
     {
         return $form

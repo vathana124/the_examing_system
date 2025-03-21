@@ -31,6 +31,11 @@ class ResultResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    public static function getNavigationIcon(): string
+    {
+        return asset('icons/flaticon/DailyReportByDistrict-3.png');
+    }
+
     public static function getCustomQuery(){
         //custom query
         $user = auth()->user();
