@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Role;
 use Filament\Forms\Components\Component;
 use Filament\Forms\Components\TextInput;
 use Filament\Pages\Auth\Register;
@@ -126,9 +127,56 @@ class CustomRegister extends Register
             ->url(filament()->getLoginUrl());
     }
 
-    protected function afterRegister(): void
+    public function register(): ?RegistrationResponse
     {
-    //    $record = $this->getRecord();
-       dd($this->userModel);
+        try {
+            $this->rateLimit(2);
+        } catch (TooManyRequestsException $exception) {
+            $this->getRateLimitedNotification($exception)?->send();
+
+            return null;
+        }
+
+        $user = $this->wrapInDatabaseTransaction(function () {
+            $this->callHook('beforeValidate');
+
+            $data = $this->form->getState();
+
+            $this->callHook('afterValidate');
+
+            $data = $this->mutateFormDataBeforeRegister($data);
+
+            $this->callHook('beforeRegister');
+
+            $user = $this->handleRegistration($data);
+
+            // to add user role by default is student
+
+            // Assign admin role to the user
+            $role = Role::firstOrNew(['name' => config('access.role.student')]);
+            $user->roles()->sync($role->id);
+
+            $this->form->model($user)->saveRelationships();
+
+            $this->callHook('afterRegister');
+
+            return $user;
+        });
+
+        event(new Registered($user));
+
+        $this->sendEmailVerificationNotification($user);
+
+        Filament::auth()->login($user);
+
+        session()->regenerate();
+
+        return app(RegistrationResponse::class);
     }
+
+    // protected function afterRegister(): void
+    // {
+    // //    $record = $this->getRecord();
+    //    dd($this->userModel);
+    // }
 }
