@@ -4,8 +4,8 @@ return [
     // default role
     'login' => [
         'title' => 'The Exam System',
-        'heading'  => 'Student Registration ?',
-        'sub_heading' => 'Student Registration ?',
+        'heading'  => 'Student Registration',
+        'sub_heading' => 'Student Registration',
         'copy_right' => 'ក្រសួងរៀបចំដែនដី នគរូបនីយកម្ម និងសំណង់',
     ],
     'otp' => [

@@ -112,12 +112,24 @@ class CustomRegister extends Register
     public function getTitle(): string | Htmlable
     {
         return __('Student Registration');
+        // return false;
     }
 
     public function getHeading(): string | Htmlable
     {
-        return __('Student Registration Form');
+        return __('Registration Form');
+        // return false;
     }
+
+    // public function getSubheading(): string | Htmlable | null
+    // {
+    //     return false;
+    // }
+
+    // public function hasLogo(): bool
+    // {
+    //     return false;
+    // }
 
     public function loginAction(): Action
     {

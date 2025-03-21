@@ -5,6 +5,7 @@
             padding: 0;
             box-sizing: border-box;
         }
+    
         html, body {
             overflow: hidden;
             height: 100vh;
@@ -12,13 +13,14 @@
             align-items: center;
             justify-content: center;
         }
+    
         .login-container {
             border-radius: 8px;
             padding: 20px;
             width: 100%;
             text-align: center;
         }
-
+    
         .logo {
             padding: 15px 15px 5px;
             display: flex;
@@ -26,43 +28,43 @@
             flex-direction: column;
             align-items: center;
         }
-
+    
         .logo img {
             width: 100px;
             height: auto;
             margin-bottom: 20px;
         }
-
+    
         .title {
             font-size: 26px;
             margin-bottom: 20px;
             font-weight: bold;
         }
-
+    
         .subtitle {
-            font-size: 20px;
+            font-size: 0.875rem;
             margin-top: 20px;
             margin-bottom: 2px;
             display: flex;
             justify-content: center;
             align-items: center;
         }
-
+    
         .login-form {
             padding: 20px;
         }
-
+    
         .login-form .form-group {
             text-align: left;
             margin-bottom: 15px;
         }
-
+    
         .login-form label {
             font-size: 14px;
             margin-bottom: 5px;
             display: block;
         }
-
+    
         .login-form input {
             width: 100%;
             padding: 10px;
@@ -71,18 +73,18 @@
             font-size: 14px;
             outline: none;
         }
-
+    
         .login-form input:focus {
-            border-color: #0a77c7;
-            box-shadow: 0 0 4px rgba(10, 119, 199, 0.2);
+            border-color: rgba(217, 119, 6, 1);
+            box-shadow: 0 0 4px rgba(217, 119, 6, 1);
         }
-
+    
         .login-button {
-            background-color: #3c8dbc;
-            border-color: #367fa9;
+            background-color: rgba(217, 119, 6, 1);
+            border-color: rgba(217, 119, 6, 1);
             color: #ffffff;
             font-weight: bold;
-            padding: 14px 10px; 
+            padding: 14px 10px;
             width: 100%;
             border: none;
             border-radius: 4px;
@@ -90,15 +92,16 @@
             cursor: pointer;
             transition: opacity 0.3s ease;
         }
-
+    
         .login-button:hover {
             opacity: 0.8;
         }
-
+    
         .footer {
             margin-top: 10px;
         }
-        .footer p{
+    
+        .footer p {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -106,23 +109,25 @@
             margin-top: 10px;
             font-size: 12px;
         }
-
+    
         .footer-text {
             font-weight: bold;
         }
+    
         .text-red-500 {
             color: red !important;
         }
+    
         .margin-top {
             margin-top: 5px;
         }
-
+    
         .error-message {
             color: red;
             font-size: 12px;
             margin-top: 5px;
         }
-
+    
         /* Responsive Design */
         @media (max-width: 768px) {
             .login-container {
@@ -179,6 +184,7 @@
                 font-size: 10px;
             }
         }
+    
         @media (max-width: 300px) {
             .logo img {
                 width: 80px;
@@ -217,7 +223,7 @@
         </div>
         <hr>
         <div class="subtitle">
-            <h2>{{ config('custom_translations.login.sub_heading') }}</h2>
+            <h2>{{ config('custom_translations.login.sub_heading') }} ? {{ $this->registerAction() }}</h2>
         </div>
 
         <!-- Display Validation Errors -->
@@ -259,7 +265,7 @@
                     <div class="error-message">{{ $message }}</div>
                 @enderror
             </div>
-            <button type="submit" class="login-button">ចូលប្រើប្រាស់</button>
+            <button type="submit" class="login-button">Login</button>
         </x-filament-panels::form>
 
         <footer class="footer">

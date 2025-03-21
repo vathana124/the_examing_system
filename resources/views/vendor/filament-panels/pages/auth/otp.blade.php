@@ -77,13 +77,13 @@
         }
 
         .login-form input:focus {
-            border-color: #0a77c7;
-            box-shadow: 0 0 4px rgba(10, 119, 199, 0.2);
+            border-color: rgba(217, 119, 6, 1);
+            box-shadow: 0 0 4px rgba(217, 119, 6, 1);
         }
 
         .login-button {
-            background-color: #3c8dbc;
-            border-color: #367fa9;
+            background-color: rgba(217, 119, 6, 1);
+            border-color: rgba(217, 119, 6, 1);
             color: #ffffff;
             font-weight: bold;
             padding: 14px 10px; 
@@ -128,25 +128,25 @@
         }
 
         .text-custom-blue{
-            color: #0a77c7;
+            color: rgba(217, 119, 6, 1);
         }
 
         /* Existing styles */
         .inline-block.align-baseline.font-bold.text-sm.text-custom-blue {
-            color: #0a77c7; /* Default color */
+            color: rgba(217, 119, 6, 1); /* Default color */
             text-decoration: none; /* Remove underline */
             transition: color 0.3s ease, opacity 0.3s ease; /* Smooth transition */
         }
 
         /* Hover state */
         .inline-block.align-baseline.font-bold.text-sm.text-custom-blue:hover {
-            color: #085a9e; /* Darker shade of blue */
+            color: rgba(217, 119, 6, 1); /* Darker shade of blue */
             opacity: 0.8; /* Slight fade effect */
         }
 
         /* Active state (when clicked) */
         .inline-block.align-baseline.font-bold.text-sm.text-custom-blue:active {
-            color: #063c6b; /* Even darker shade of blue */
+            color: rgba(217, 119, 6, 1); /* Even darker shade of blue */
             opacity: 0.9; /* Slightly less fade than hover */
         }
 
