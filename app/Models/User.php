@@ -30,6 +30,12 @@ class User extends Authenticatable implements FilamentUser
         'updated_by',
         'exam_ids',
         'teachers',
+        'token_2fa',
+        'token_2fa_expiry',
+        'email_otp',
+        'verify_otp_false',
+        'otp_input_email',
+        'otp_resend_duration'
     ];
 
     protected $hidden = [

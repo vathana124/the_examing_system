@@ -13,6 +13,21 @@ return [
     |
     */
 
+            /**
+     * Force enable OTP for all users
+     */
+    'enable_email_otp' => env('ENABLE_EMAIL_OTP', true),
+    'resend_time' => env('RESEND_TIME', 1),
+    'expired_date' => env('SESSION_LIFETIME', 120),
+
+    // logout with remove otp or reset otp
+
+    'logout_remove_otp' => env('LOGOUT_REMOVE_OTP', true),
+    
+    // key clock enable
+
+    'keyclock_enable' => env('KEYCLOAK_ENABLE', false),
+
     'defaults' => [
         'guard' => env('AUTH_GUARD', 'web'),
         'passwords' => env('AUTH_PASSWORD_BROKER', 'users'),

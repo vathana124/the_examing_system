@@ -71,31 +71,41 @@ class UserRegistrationResource extends Resource
                         ->modalHeading('Do you want to allow to exam ?') // Confirmation modal title
                         ->disabled(function($record){
                             $user = auth()->user();
-                            if($record->isStudent()){
-                                $teachers = json_decode($record?->teachers,true);
-                                if($teachers){
-                                    if(in_array($user?->id, $teachers)){
-                                        return true;
+                            if($user->isSuperAdmin()){
+                                return true;
+                            }
+                            else{
+                                if($record->isStudent()){
+                                    $teachers = json_decode($record?->teachers,true);
+                                    if($teachers){
+                                        if(in_array($user?->id, $teachers)){
+                                            return true;
+                                        }
+                                        return false;
                                     }
                                     return false;
                                 }
-                                return false;
+                                return true;
                             }
-                            return true;
                         })
                         ->hidden(function($record){
                             $user = auth()->user();
-                            if($record->isStudent()){
-                                $teachers = json_decode($record?->teachers,true);
-                                if($teachers){
-                                    if(in_array($user?->id, $teachers)){
-                                        return true;
+                            if($user->isSuperAdmin()){
+                                return true;
+                            }
+                            else{
+                                if($record->isStudent()){
+                                    $teachers = json_decode($record?->teachers,true);
+                                    if($teachers){
+                                        if(in_array($user?->id, $teachers)){
+                                            return true;
+                                        }
+                                        return false;
                                     }
                                     return false;
                                 }
-                                return false;
+                                return true;
                             }
-                            return true;
                         })
                         ->action(function($record){
                             if($record){
@@ -132,31 +142,41 @@ class UserRegistrationResource extends Resource
                         ->icon('heroicon-o-academic-cap')
                         ->disabled(function($record){
                             $user = auth()->user();
-                            if($record->isStudent()){
-                                $teachers = json_decode($record?->teachers,true);
-                                if($teachers){
-                                    if(in_array($user?->id, $teachers)){
-                                        return false;
+                            if($user->isSuperAdmin()){
+                                return true;
+                            }
+                            else{
+                                if($record->isStudent()){
+                                    $teachers = json_decode($record?->teachers,true);
+                                    if($teachers){
+                                        if(in_array($user?->id, $teachers)){
+                                            return false;
+                                        }
+                                        return true;
                                     }
                                     return true;
                                 }
                                 return true;
                             }
-                            return true;
                         })
                         ->hidden(function($record){
                             $user = auth()->user();
-                            if($record->isStudent()){
-                                $teachers = json_decode($record?->teachers,true);
-                                if($teachers){
-                                    if(in_array($user?->id, $teachers)){
-                                        return false;
+                            if($user->isSuperAdmin()){
+                                return true;
+                            }
+                            else{
+                                if($record->isStudent()){
+                                    $teachers = json_decode($record?->teachers,true);
+                                    if($teachers){
+                                        if(in_array($user?->id, $teachers)){
+                                            return false;
+                                        }
+                                        return true;
                                     }
                                     return true;
                                 }
                                 return true;
                             }
-                            return true;
                         })
                         ->action(function($record){
                             if($record){
