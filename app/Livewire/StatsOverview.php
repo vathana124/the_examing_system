@@ -14,7 +14,7 @@ class StatsOverview extends BaseWidget
     {
         $user = auth()->user();
         if($user->isTeacher()){
-            $students = User::where('created_by', $user?->id);
+            $students = User::whereJsonContains('teachers', $user->id)->get();
             $exams = Exam::where('created_by', $user?->id);
     
             return [
@@ -31,7 +31,7 @@ class StatsOverview extends BaseWidget
         }
         else{
             $user = auth()->user();
-            $exams = Exam::where('created_by', $user?->created_by); // Use $user->id instead of $user->created_by
+            $exams = Exam::where('created_by', json_decode($user?->teachers)); // Use $user->id instead of $user->created_by
             $failed = 0;
             $passed = 0;
         

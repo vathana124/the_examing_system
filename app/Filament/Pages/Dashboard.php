@@ -17,8 +17,8 @@ class Dashboard extends BaseDashboard
         return [
             StatsOverview::class,
             // PieChart::class,
-            LineChart::class,
-            Line1Chart::class
+            // LineChart::class,
+            // Line1Chart::class
         ];
     }
 

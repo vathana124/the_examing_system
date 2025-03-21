@@ -214,7 +214,15 @@ class UserRegistrationResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        $query = User::whereNotNull('id');
-        return $query->where('created_by', auth()->user()?->id);
+        // get users that are students
+        $user_ids = DB::table('model_has_roles')
+                        ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
+                        ->where('model_has_roles.model_type', 'App\Models\User')
+                        ->where('roles.name', config('access.role.student'))->pluck('model_has_roles.model_id');
+
+        // get users
+        $query = User::whereIn('id', $user_ids);
+
+        return $query;
     }
 }
