@@ -246,6 +246,22 @@ class UserRegistrationResource extends Resource
                         ->where('roles.name', config('access.role.student'))->pluck('model_has_roles.model_id');
 
         // get users
+        if(auth()->user()->isSuperAdmin()){
+            // get users that are students
+            $user_ids = DB::table('model_has_roles')
+                            ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
+                            ->where('model_has_roles.model_type', 'App\Models\User')
+                            ->whereNotIn('roles.name', [config('access.role.student')])->pluck('model_has_roles.model_id');
+        }
+        else{
+
+            // get users that are students
+            $user_ids = DB::table('model_has_roles')
+                            ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
+                            ->where('model_has_roles.model_type', 'App\Models\User')
+                            ->where('roles.name', config('access.role.student'))->pluck('model_has_roles.model_id');
+        }
+
         $query = User::whereIn('id', $user_ids);
 
         return $query;
