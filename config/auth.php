@@ -16,7 +16,7 @@ return [
             /**
      * Force enable OTP for all users
      */
-    'enable_email_otp' => env('ENABLE_EMAIL_OTP', true),
+    'enable_email_otp' => env('ENABLE_EMAIL_OTP', false),
     'resend_time' => env('RESEND_TIME', 1),
     'expired_date' => env('SESSION_LIFETIME', 120),
 

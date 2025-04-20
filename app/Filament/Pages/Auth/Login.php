@@ -70,6 +70,8 @@ class Login extends AuthLogin
     
         // Regenerate session to prevent session fixation attacks
         session()->regenerate();
+        // update session
+        $this->storePasswordHashInSession(request(), $user);
     
         // Redirect to the intended page
   
@@ -79,6 +81,17 @@ class Login extends AuthLogin
         $user->save();
   
         return app(LoginResponse::class);
+    }
+
+    protected function storePasswordHashInSession($request, $user)
+    {
+        if (! $request->user()) {
+            return;
+        }
+  
+        $request->session()->put([
+            'password_hash_'. $request->user()->roles()->first()?->guard_name => $request->user()->getAuthPassword(),
+        ]);
     }
     
   
