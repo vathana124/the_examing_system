@@ -29,7 +29,7 @@ class StatsOverview extends BaseWidget
                     ->color('primary'),
             ];
         }
-        else{
+        else if(!$user->isSuperAdmin()){
             $user = auth()->user();
             $exams = Exam::where('created_by', json_decode($user?->teachers)); // Use $user->id instead of $user->created_by
             $failed = 0;
@@ -65,6 +65,9 @@ class StatsOverview extends BaseWidget
                     ->descriptionIcon('heroicon-o-x-circle')
                     ->color('danger'),
             ];
+        }
+        else{
+            return [];
         }
     }
 

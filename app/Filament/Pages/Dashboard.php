@@ -28,11 +28,11 @@ class Dashboard extends BaseDashboard
 
     public static function canAccess(): bool
     {
-        $user = auth()->user();
+        // $user = auth()->user();
 
-        if($user->isSuperAdmin()){
-            return false;
-        }
+        // if($user->isSuperAdmin()){
+        //     return false;
+        // }
         return true;
     }
 
