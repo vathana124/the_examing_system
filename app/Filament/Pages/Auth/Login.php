@@ -174,7 +174,7 @@ class Login extends AuthLogin
     {
         return Action::make('register')
             ->link()
-            ->label(__('filament-panels::pages/auth/login.actions.register.label'))
+            ->label(__('Registration'))
             ->url(filament()->getRegistrationUrl());
     }
   
