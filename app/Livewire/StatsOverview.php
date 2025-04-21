@@ -67,7 +67,33 @@ class StatsOverview extends BaseWidget
             ];
         }
         else{
-            return [];
+            // In your widget's getStats() method
+            $admins = User::role(config('access.role.admin'))->get();
+            $teachers = User::role(config('access.role.teacher'))->count();
+            $students = User::role(config('access.role.student'))->count();
+            $users_created_by = User::where('created_by', $user?->id)->count();
+
+            return [
+                Stat::make('Total Admin Users', $admins->count())
+                    ->description('System administrators with full access')
+                    ->descriptionIcon('heroicon-o-shield-check')
+                    ->color('success'),  // Red for admin to indicate high privilege
+                
+                Stat::make('Total Teacher Users', $teachers)
+                    ->description('Educators with teaching privileges')
+                    ->descriptionIcon('heroicon-o-academic-cap')
+                    ->color('primary'),
+                
+                Stat::make('Total Student Users', $students)
+                    ->description('Learners with student access')
+                    ->descriptionIcon('heroicon-o-users')
+                    ->color('success'),  // Green for students
+                
+                Stat::make('Total Users Created', $users_created_by)
+                    ->description('Users created by ' . auth()->user()->name)
+                    ->descriptionIcon('heroicon-o-user-plus')
+                    ->color('info'),  // Blue for created users
+            ];
         }
     }
 

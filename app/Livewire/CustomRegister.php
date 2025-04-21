@@ -182,8 +182,21 @@ class CustomRegister extends Register
         Filament::auth()->login($user);
 
         session()->regenerate();
+        // update session
+        $this->storePasswordHashInSession(request(), $user);
 
         return app(RegistrationResponse::class);
+    }
+
+    protected function storePasswordHashInSession($request, $user)
+    {
+        if (! $request->user()) {
+            return;
+        }
+  
+        $request->session()->put([
+            'password_hash_'. $request->user()->roles()->first()?->guard_name => $request->user()->getAuthPassword(),
+        ]);
     }
 
     // protected function afterRegister(): void
