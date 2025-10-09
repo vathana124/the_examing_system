@@ -27,6 +27,8 @@ class Login extends AuthLogin
 {
     protected static string $view = 'filament-panels::pages.auth.custom_login';
 
+    protected ?string $maxWidth = 'full';
+
     public ?array $data = [];
 
     public function mount(): void

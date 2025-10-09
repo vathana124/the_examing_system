@@ -3,14 +3,14 @@
 return [
     // default role
     'login' => [
-        'title' => 'The Exam System',
+        'title' => 'AcademiaQuiz',
         'heading'  => 'Student Registration',
         'sub_heading' => 'Student Registration',
         'copy_right' => 'ក្រសួងរៀបចំដែនដី នគរូបនីយកម្ម និងសំណង់',
     ],
     'otp' => [
-        'title' => 'The Exam System',
-        'heading'  => 'The Exam System',
+        'title' => 'AcademiaQuiz',
+        'heading'  => 'AcademiaQuiz',
         'sub_heading' => 'Verify OTP',
         'copy_right' => 'ក្រសួងរៀបចំដែនដី នគរូបនីយកម្ម និងសំណង់',
         'email_title' => 'Please Check Your Mail For OTP',

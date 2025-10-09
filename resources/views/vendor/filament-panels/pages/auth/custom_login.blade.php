@@ -216,7 +216,7 @@
 
     <div class="login-container">
         <div class="logo">
-            <img src="{{ asset('assets/images/exam-results.png')}}" alt="Logo">
+            <img src="{{ asset('assets/images/logo-v-2.png')}}" alt="Logo">
             <div class="title">
                 <h1>{{ config('custom_translations.login.title') }}</h1>
             </div>
